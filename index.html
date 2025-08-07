@@ -72,6 +72,16 @@
       cursor: pointer;
     }
 
+    .delete-assignment-btn {
+      margin-top: 0.5rem;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+    }
+
     .output {
       white-space: pre-line;
       background-color: #eef;
@@ -104,21 +114,34 @@
 
   <script>
     const surahs = [
-      "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف",
-      "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر",
-      "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون",
-      "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان",
-      "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
-      "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح",
-      "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة",
-      "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون",
-      "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
-      "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الانسان", "المرسلات",
-      "النبأ", "النازعات", "عبس", "التكوير", "الإنفطار", "المطففين", "الإنشقاق",
-      "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس",
-      "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة",
-      "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش",
-      "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+      ["Al-Fatiha", "الفاتحة"], ["Al-Baqarah", "البقرة"], ["Aal-Imran", "آل عمران"], ["An-Nisa", "النساء"],
+      ["Al-Ma'idah", "المائدة"], ["Al-An'am", "الأنعام"], ["Al-A'raf", "الأعراف"], ["Al-Anfal", "الأنفال"],
+      ["At-Tawbah", "التوبة"], ["Yunus", "يونس"], ["Hud", "هود"], ["Yusuf", "يوسف"], ["Ar-Ra'd", "الرعد"],
+      ["Ibrahim", "إبراهيم"], ["Al-Hijr", "الحجر"], ["An-Nahl", "النحل"], ["Al-Isra", "الإسراء"],
+      ["Al-Kahf", "الكهف"], ["Maryam", "مريم"], ["Ta-Ha", "طه"], ["Al-Anbiya", "الأنبياء"],
+      ["Al-Hajj", "الحج"], ["Al-Mu'minun", "المؤمنون"], ["An-Nur", "النور"], ["Al-Furqan", "الفرقان"],
+      ["Ash-Shu'ara", "الشعراء"], ["An-Naml", "النمل"], ["Al-Qasas", "القصص"], ["Al-Ankabut", "العنكبوت"],
+      ["Ar-Rum", "الروم"], ["Luqman", "لقمان"], ["As-Sajda", "السجدة"], ["Al-Ahzab", "الأحزاب"],
+      ["Saba", "سبأ"], ["Fatir", "فاطر"], ["Ya-Sin", "يس"], ["As-Saffat", "الصافات"],
+      ["Sad", "ص"], ["Az-Zumar", "الزمر"], ["Ghafir", "غافر"], ["Fussilat", "فصلت"],
+      ["Ash-Shura", "الشورى"], ["Az-Zukhruf", "الزخرف"], ["Ad-Dukhan", "الدخان"], ["Al-Jathiya", "الجاثية"],
+      ["Al-Ahqaf", "الأحقاف"], ["Muhammad", "محمد"], ["Al-Fath", "الفتح"], ["Al-Hujurat", "الحجرات"],
+      ["Qaf", "ق"], ["Adh-Dhariyat", "الذاريات"], ["At-Tur", "الطور"], ["An-Najm", "النجم"],
+      ["Al-Qamar", "القمر"], ["Ar-Rahman", "الرحمن"], ["Al-Waqi'a", "الواقعة"], ["Al-Hadid", "الحديد"],
+      ["Al-Mujadila", "المجادلة"], ["Al-Hashr", "الحشر"], ["Al-Mumtahina", "الممتحنة"], ["As-Saff", "الصف"],
+      ["Al-Jumua", "الجمعة"], ["Al-Munafiqun", "المنافقون"], ["At-Taghabun", "التغابن"], ["At-Talaq", "الطلاق"],
+      ["At-Tahrim", "التحريم"], ["Al-Mulk", "الملك"], ["Al-Qalam", "القلم"], ["Al-Haqqa", "الحاقة"],
+      ["Al-Ma'arij", "المعارج"], ["Nuh", "نوح"], ["Al-Jinn", "الجن"], ["Al-Muzzammil", "المزمل"],
+      ["Al-Muddaththir", "المدثر"], ["Al-Qiyama", "القيامة"], ["Al-Insan", "الانسان"], ["Al-Mursalat", "المرسلات"],
+      ["An-Naba", "النبأ"], ["An-Nazi'at", "النازعات"], ["Abasa", "عبس"], ["At-Takwir", "التكوير"],
+      ["Al-Infitar", "الإنفطار"], ["Al-Mutaffifin", "المطففين"], ["Al-Inshiqaq", "الإنشقاق"], ["Al-Buruj", "البروج"],
+      ["At-Tariq", "الطارق"], ["Al-Ala", "الأعلى"], ["Al-Ghashiyah", "الغاشية"], ["Al-Fajr", "الفجر"],
+      ["Al-Balad", "البلد"], ["Ash-Shams", "الشمس"], ["Al-Lail", "الليل"], ["Ad-Duhaa", "الضحى"],
+      ["Ash-Sharh", "الشرح"], ["At-Tin", "التين"], ["Al-Alaq", "العلق"], ["Al-Qadr", "القدر"],
+      ["Al-Bayyina", "البينة"], ["Az-Zalzalah", "الزلزلة"], ["Al-Adiyat", "العاديات"], ["Al-Qari'a", "القارعة"],
+      ["At-Takathur", "التكاثر"], ["Al-Asr", "العصر"], ["Al-Humazah", "الهمزة"], ["Al-Fil", "الفيل"],
+      ["Quraish", "قريش"], ["Al-Ma'un", "الماعون"], ["Al-Kawthar", "الكوثر"], ["Al-Kafirun", "الكافرون"],
+      ["An-Nasr", "النصر"], ["Al-Masad", "المسد"], ["Al-Ikhlas", "الإخلاص"], ["Al-Falaq", "الفلق"], ["An-Nas", "الناس"]
     ];
 
     let students = JSON.parse(localStorage.getItem('quranStudents') || '[]');
@@ -144,22 +167,32 @@
       save();
     }
 
-    function renderAssignment(studentIndex, a, j) {
-      const div = document.createElement('div');
-      div.innerHTML = `
+    function renderAssignment(studentIndex, assignment, assignmentIndex) {
+      const wrapper = document.createElement('div');
+      const options = surahs.map(([en, ar]) => `<option value="${en}" ${assignment.surah === en ? 'selected' : ''}>${ar} (${en})</option>`).join('');
+      wrapper.innerHTML = `
         <label>Surah</label>
-        <select>
-          ${surahs.map(s => `<option value="${s}" ${a.surah === s ? 'selected' : ''}>${s}</option>`).join('')}
-        </select>
+        <select onchange="students[${studentIndex}].assignments[${assignmentIndex}].surah = this.value; save()">${options}</select>
         <div class="inline">
-          <input type="checkbox" ${a.entire ? 'checked' : ''} onchange="this.parentElement.nextElementSibling.disabled = this.checked; this.parentElement.nextElementSibling.nextElementSibling.disabled = this.checked;"> 
+          <input type="checkbox" ${assignment.entire ? 'checked' : ''} onchange="
+            students[${studentIndex}].assignments[${assignmentIndex}].entire = this.checked;
+            this.parentElement.parentElement.querySelector('.from-ayah').disabled = this.checked;
+            this.parentElement.parentElement.querySelector('.to-ayah').disabled = this.checked;
+            save();
+          ">
           <label>Entire Surah</label>
         </div>
-        <input type="number" placeholder="From Ayah" value="${a.from || ''}" ${a.entire ? 'disabled' : ''}>
-        <input type="number" placeholder="To Ayah" value="${a.to || ''}" ${a.entire ? 'disabled' : ''}>
+        <input type="number" class="from-ayah" placeholder="From Ayah" value="${assignment.from || ''}" ${assignment.entire ? 'disabled' : ''} onchange="students[${studentIndex}].assignments[${assignmentIndex}].from = this.value; save()">
+        <input type="number" class="to-ayah" placeholder="To Ayah" value="${assignment.to || ''}" ${assignment.entire ? 'disabled' : ''} onchange="students[${studentIndex}].assignments[${assignmentIndex}].to = this.value; save()">
+        <button class="delete-assignment-btn" onclick="
+          if (confirm('Are you sure you want to delete this surah assignment?')) {
+            students[${studentIndex}].assignments.splice(${assignmentIndex}, 1);
+            renderStudents();
+          }
+        ">🗑️ Remove Surah</button>
         <hr>
       `;
-      document.getElementById(`assignments-${studentIndex}`).appendChild(div);
+      document.getElementById(`assignments-${studentIndex}`).appendChild(wrapper);
     }
 
     function addStudentToList() {
@@ -173,12 +206,14 @@
     }
 
     function deleteStudent(index) {
-      students.splice(index, 1);
-      renderStudents();
+      if (confirm('Are you sure you want to delete this student?')) {
+        students.splice(index, 1);
+        renderStudents();
+      }
     }
 
     function addAssignment(i) {
-      students[i].assignments.push({ surah: surahs[0], from: '', to: '', entire: false });
+      students[i].assignments.push({ surah: surahs[0][0], from: '', to: '', entire: false });
       renderStudents();
     }
 
@@ -189,8 +224,10 @@
         msg += `👦 Student: ${student.name}\n`;
         msgAr += `👦 الطالب: ${student.name}\n`;
         student.assignments.forEach(a => {
+          const surahPair = surahs.find(([en]) => en === a.surah);
+          const ar = surahPair ? surahPair[1] : a.surah;
           msg += `📖 Surah: ${a.surah}\n`;
-          msgAr += `📖 السورة: ${a.surah}\n`;
+          msgAr += `📖 السورة: ${ar}\n`;
           if (a.entire) {
             msg += `🔢 Entire Surah\n\n`;
             msgAr += `🔢 السورة كاملة\n\n`;
