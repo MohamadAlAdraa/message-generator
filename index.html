@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Homework Generator</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    select, input, button { margin: 5px 0; padding: 8px; width: 100%; }
+    .section { margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    .multi-surah { margin-top: 10px; padding: 10px; border: 1px dashed #aaa; border-radius: 5px; }
+    .output { white-space: pre-line; background: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 20px; }
+    .btn-small { padding: 5px 10px; font-size: 0.9rem; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <h2>📚 Quran Homework Generator</h2>
+
+  <div class="section">
+    <label for="classSelect">📘 Select Class</label>
+    <select id="classSelect"></select>
+    <button onclick="addClass()">➕ Add New Class</button>
+    <input type="text" id="newClassName" placeholder="Enter new class name" />
+  </div>
+
+  <div class="section">
+    <label for="studentSelect">🧒 Select Student</label>
+    <select id="studentSelect"></select>
+    <input type="text" id="newStudentName" placeholder="Add new student to selected class" />
+    <button onclick="addStudent()">➕ Add Student</button>
+  </div>
+
+  <div class="section">
+    <h4>📖 Add Surah Assignment(s)</h4>
+    <div id="surahAssignments"></div>
+    <button onclick="addSurahAssignment()">➕ Add Surah</button>
+  </div>
+
+  <div class="section">
+    <button onclick="generateMessage()">✅ Generate Message</button>
+    <button class="btn-small" onclick="copyMessage()">📋 Copy</button>
+    <div class="output" id="output"></div>
+  </div>
+
+  <script>
+    const surahs = [
+      "Al-Fatiha", "Al-Baqarah", "Aal-Imran", "An-Nisa", "Al-Ma'idah",
+      "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus",
+      "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl",
+      "Al-Isra", "Al-Kahf", "Maryam", "Ta-Ha", "Al-Anbiya", "Al-Hajj",
+      "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml",
+      "Al-Qasas", "Al-Ankabut", "Ar-Rum", "Luqman", "As-Sajda",
+      "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad",
+      "Az-Zumar", "Ghafir", "Fussilat", "Ash-Shura", "Az-Zukhruf",
+      "Ad-Dukhan", "Al-Jathiya", "Al-Ahqaf", "Muhammad", "Al-Fath",
+      "Al-Hujurat", "Qaf", "Adh-Dhariyat", "At-Tur", "An-Najm",
+      "Al-Qamar", "Ar-Rahman", "Al-Waqia", "Al-Hadid", "Al-Mujadila",
+      "Al-Hashr", "Al-Mumtahina", "As-Saff", "Al-Jumu'a", "Al-Munafiqun",
+      "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam",
+      "Al-Haqqa", "Al-Ma'arij", "Nuh", "Al-Jinn", "Al-Muzzammil",
+      "Al-Muddaththir", "Al-Qiyama", "Al-Insan", "Al-Mursalat",
+      "An-Naba", "An-Nazi'at", "Abasa", "At-Takwir", "Al-Infitar",
+      "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la",
+      "Al-Ghashiyah", "Al-Fajr", "Al-Balad", "Ash-Shams", "Al-Layl",
+      "Ad-Duhaa", "Ash-Sharh", "At-Tin", "Al-Alaq", "Al-Qadr",
+      "Al-Bayyina", "Az-Zalzalah", "Al-Adiyat", "Al-Qari'a", "At-Takathur",
+      "Al-Asr", "Al-Humazah", "Al-Fil", "Quraish", "Al-Ma'un",
+      "Al-Kawthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas",
+      "Al-Falaq", "An-Nas"
+    ];
+
+    let classes = JSON.parse(localStorage.getItem("quranClasses") || '{}');
+    const classSelect = document.getElementById("classSelect");
+    const studentSelect = document.getElementById("studentSelect");
+
+    function saveClasses() {
+      localStorage.setItem("quranClasses", JSON.stringify(classes));
+    }
+
+    function populateClasses() {
+      classSelect.innerHTML = "";
+      Object.keys(classes).forEach(cls => {
+        const option = document.createElement("option");
+        option.value = cls;
+        option.textContent = cls;
+        classSelect.appendChild(option);
+      });
+      populateStudents();
+    }
+
+    function populateStudents() {
+      studentSelect.innerHTML = "";
+      const cls = classSelect.value;
+      if (classes[cls]) {
+        classes[cls].forEach(student => {
+          const option = document.createElement("option");
+          option.value = student;
+          option.textContent = student;
+          studentSelect.appendChild(option);
+        });
+      }
+    }
+
+    function addClass() {
+      const name = document.getElementById("newClassName").value.trim();
+      if (!name) return;
+      if (!classes[name]) classes[name] = [];
+      saveClasses();
+      populateClasses();
+      document.getElementById("newClassName").value = "";
+    }
+
+    function addStudent() {
+      const student = document.getElementById("newStudentName").value.trim();
+      const cls = classSelect.value;
+      if (!student || !cls) return;
+      if (!classes[cls].includes(student)) classes[cls].push(student);
+      saveClasses();
+      populateStudents();
+      document.getElementById("newStudentName").value = "";
+    }
+
+    function addSurahAssignment() {
+      const div = document.createElement("div");
+      div.className = "multi-surah";
+      div.innerHTML = `
+        <label>Surah:</label>
+        <select class="surah-name">
+          ${surahs.map(s => `<option value="${s}">${s}</option>`).join('')}
+        </select>
+        <label>Ayah From:</label>
+        <input type="number" class="ayah-from" placeholder="Start Ayah">
+        <label>Ayah To:</label>
+        <input type="number" class="ayah-to" placeholder="End Ayah">
+        <label><input type="checkbox" class="entire-surah"> Entire Surah</label>
+      `;
+      document.getElementById("surahAssignments").appendChild(div);
+    }
+
+    function generateMessage() {
+      const name = studentSelect.value;
+      const assignments = document.querySelectorAll(".multi-surah");
+      let msg = `📚 Quran Homework Assignment\n\n👦 Student: ${name}\n`;
+      assignments.forEach(a => {
+        const surah = a.querySelector(".surah-name").value;
+        const from = a.querySelector(".ayah-from").value;
+        const to = a.querySelector(".ayah-to").value;
+        const all = a.querySelector(".entire-surah").checked;
+        msg += `\n📖 Surah: ${surah}\n`;
+        msg += all ? `🔢 Entire Surah\n` : `🔢 Ayahs: ${from} to ${to}\n`;
+      });
+      msg += `\n📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!`;
+      document.getElementById("output").textContent = msg;
+    }
+
+    function copyMessage() {
+      const text = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(text).then(() => alert("Message copied!"));
+    }
+
+    // Initialize
+    populateClasses();
+    classSelect.addEventListener("change", populateStudents);
+    addSurahAssignment();
+  </script>
+</body>
+</html>
