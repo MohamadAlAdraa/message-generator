@@ -62,11 +62,28 @@
       font-size: 1rem;
     }
 
+    .delete-btn {
+      float: right;
+      background: red;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
     .output {
       white-space: pre-line;
       background-color: #eef;
       padding: 1rem;
       border-radius: 8px;
+    }
+
+    .inline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
@@ -87,82 +104,104 @@
 
   <script>
     const surahs = [
-      { en: "Al-Fatiha", ar: "الفاتحة" }, { en: "Al-Baqarah", ar: "البقرة" },
-      { en: "Aal-Imran", ar: "آل عمران" }, { en: "An-Nisa", ar: "النساء" },
-      { en: "Al-Ma'idah", ar: "المائدة" }, { en: "Al-An'am", ar: "الأنعام" },
-      { en: "Al-A'raf", ar: "الأعراف" }, { en: "Al-Anfal", ar: "الأنفال" },
-      { en: "At-Tawbah", ar: "التوبة" }, { en: "Yunus", ar: "يونس" },
-      { en: "Hud", ar: "هود" }, { en: "Yusuf", ar: "يوسف" },
-      { en: "Ar-Ra'd", ar: "الرعد" }, { en: "Ibrahim", ar: "إبراهيم" },
-      { en: "Al-Hijr", ar: "الحجر" }, { en: "An-Nahl", ar: "النحل" },
-      { en: "Al-Isra", ar: "الإسراء" }, { en: "Al-Kahf", ar: "الكهف" },
-      { en: "Maryam", ar: "مريم" }, { en: "Ta-Ha", ar: "طه" },
-      { en: "An-Nas", ar: "الناس" }, { en: "Al-Ikhlas", ar: "الإخلاص" }
+      "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف",
+      "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر",
+      "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون",
+      "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان",
+      "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+      "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح",
+      "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة",
+      "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون",
+      "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+      "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الانسان", "المرسلات",
+      "النبأ", "النازعات", "عبس", "التكوير", "الإنفطار", "المطففين", "الإنشقاق",
+      "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس",
+      "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة",
+      "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش",
+      "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
     ];
 
-    const students = JSON.parse(localStorage.getItem('quranStudents') || '[]');
-    const container = document.getElementById('studentsContainer');
+    let students = JSON.parse(localStorage.getItem('quranStudents') || '[]');
+
+    function save() {
+      localStorage.setItem('quranStudents', JSON.stringify(students));
+    }
 
     function renderStudents() {
+      const container = document.getElementById('studentsContainer');
       container.innerHTML = '';
       students.forEach((student, i) => {
         const box = document.createElement('div');
         box.className = 'student-box';
-        box.innerHTML = `
-          <strong>${student.name}</strong>
-          <label>Surah</label>
-          <select class="surah-select">
-            ${surahs.map(s => `<option value="${s.en}">${s.ar} (${s.en})</option>`).join('')}
-          </select>
-          <label><input type="checkbox" class="entire-checkbox" /> Entire Surah</label>
-          <label>From Ayah</label>
-          <input type="number" class="from-ayah" placeholder="e.g. 1">
-          <label>To Ayah</label>
-          <input type="number" class="to-ayah" placeholder="e.g. 10">
-        `;
+        box.innerHTML = `<strong>${student.name}</strong>
+          <button class="delete-btn" onclick="deleteStudent(${i})">Delete</button>
+          <div id="assignments-${i}"></div>
+          <button class="add-btn" onclick="addAssignment(${i})">➕ Add Surah</button>`;
         container.appendChild(box);
+        if (!student.assignments) student.assignments = [];
+        student.assignments.forEach((a, j) => renderAssignment(i, a, j));
       });
+      save();
+    }
+
+    function renderAssignment(studentIndex, a, j) {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <label>Surah</label>
+        <select>
+          ${surahs.map(s => `<option value="${s}" ${a.surah === s ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+        <div class="inline">
+          <input type="checkbox" ${a.entire ? 'checked' : ''} onchange="this.parentElement.nextElementSibling.disabled = this.checked; this.parentElement.nextElementSibling.nextElementSibling.disabled = this.checked;"> 
+          <label>Entire Surah</label>
+        </div>
+        <input type="number" placeholder="From Ayah" value="${a.from || ''}" ${a.entire ? 'disabled' : ''}>
+        <input type="number" placeholder="To Ayah" value="${a.to || ''}" ${a.entire ? 'disabled' : ''}>
+        <hr>
+      `;
+      document.getElementById(`assignments-${studentIndex}`).appendChild(div);
     }
 
     function addStudentToList() {
       const input = document.getElementById('newStudent');
       const name = input.value.trim();
       if (name) {
-        students.push({ name });
-        localStorage.setItem('quranStudents', JSON.stringify(students));
-        renderStudents();
+        students.push({ name, assignments: [] });
         input.value = '';
+        renderStudents();
       }
     }
 
+    function deleteStudent(index) {
+      students.splice(index, 1);
+      renderStudents();
+    }
+
+    function addAssignment(i) {
+      students[i].assignments.push({ surah: surahs[0], from: '', to: '', entire: false });
+      renderStudents();
+    }
+
     function generateMessage() {
-      const studentBoxes = document.querySelectorAll('.student-box');
       let msg = '📚 Quran Homework Assignment\n\n';
       let msgAr = '📚 واجب تحفيظ القرآن\n\n';
-
-      studentBoxes.forEach(box => {
-        const name = box.querySelector('strong').textContent;
-        const surah = box.querySelector('.surah-select').value;
-        const surahAr = surahs.find(s => s.en === surah).ar;
-        const entire = box.querySelector('.entire-checkbox').checked;
-        const from = box.querySelector('.from-ayah').value;
-        const to = box.querySelector('.to-ayah').value;
-
-        msg += `👦 Student: ${name}\n📖 Surah: ${surah}\n`;
-        msgAr += `👦 الطالب: ${name}\n📖 السورة: ${surahAr}\n`;
-
-        if (entire) {
-          msg += `🔢 Entire Surah\n\n`;
-          msgAr += `🔢 السورة كاملة\n\n`;
-        } else {
-          msg += `🔢 Ayahs: ${from} to ${to}\n\n`;
-          msgAr += `🔢 الآيات: ${from} إلى ${to}\n\n`;
-        }
+      students.forEach(student => {
+        msg += `👦 Student: ${student.name}\n`;
+        msgAr += `👦 الطالب: ${student.name}\n`;
+        student.assignments.forEach(a => {
+          msg += `📖 Surah: ${a.surah}\n`;
+          msgAr += `📖 السورة: ${a.surah}\n`;
+          if (a.entire) {
+            msg += `🔢 Entire Surah\n\n`;
+            msgAr += `🔢 السورة كاملة\n\n`;
+          } else {
+            msg += `🔢 Ayahs: ${a.from} to ${a.to}\n\n`;
+            msgAr += `🔢 الآيات: ${a.from} إلى ${a.to}\n\n`;
+          }
+        });
       });
-
       msg += "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!\n\n";
       msgAr += "📌 الرجاء متابعة طفلك في المراجعة والحفظ.\nجزاكم الله خيرًا!";
-
       document.getElementById('output').textContent = msg + '\n' + msgAr;
     }
 
