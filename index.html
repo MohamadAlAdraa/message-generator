@@ -9,31 +9,31 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 2rem;
-      background-color: #f9f9f9;
+      background-color: #f3f7fa;
       color: #333;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
-    .student-block {
+    .section {
       background-color: #fff;
       padding: 1rem;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
     }
 
-    .student-block label {
+    .section label {
       display: block;
       margin-top: 0.5rem;
       font-weight: 600;
     }
 
-    .student-block input,
-    .student-block select {
+    .section input,
+    .section select {
       width: 100%;
       padding: 0.5rem;
       margin-top: 0.25rem;
@@ -42,8 +42,12 @@
       font-size: 1rem;
     }
 
-    .student-block .checkbox-row {
-      margin-top: 0.5rem;
+    .student-box {
+      background-color: #ffffff;
+      border-left: 5px solid #007bff;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
     }
 
     .add-btn, .generate-btn {
@@ -58,102 +62,111 @@
       font-size: 1rem;
     }
 
-    .add-btn:hover, .generate-btn:hover {
-      background-color: #0056b3;
-    }
-
     .output {
       white-space: pre-line;
       background-color: #eef;
       padding: 1rem;
       border-radius: 8px;
-      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
   <h1>📚 Quran Homework Generator</h1>
 
-  <div id="studentsList"></div>
-
-  <div class="student-block">
-    <label>Student Name</label>
-    <input type="text" id="studentName" placeholder="e.g. Mohamad Al Adraa" />
-
-    <label>Surah</label>
-    <select id="surah">
-      <option value="">Select Surah</option>
-    </select>
-
-    <div class="checkbox-row">
-      <label><input type="checkbox" id="entireSurah" /> Entire Surah</label>
-    </div>
-
-    <label>From Ayah</label>
-    <input type="number" id="fromAyah" placeholder="e.g. 1" />
-
-    <label>To Ayah</label>
-    <input type="number" id="toAyah" placeholder="e.g. 10" />
-
-    <button class="add-btn" onclick="addStudentAssignment()">➕ Add Student</button>
+  <div class="section">
+    <label for="newStudent">Add New Student</label>
+    <input type="text" id="newStudent" placeholder="e.g. Mohamad" />
+    <button class="add-btn" onclick="addStudentToList()">Add Student</button>
   </div>
 
-  <button class="generate-btn" onclick="generateMessage()">✅ Generate Message</button>
+  <div class="section" id="studentsContainer"></div>
 
-  <div class="output" id="output"></div>
+  <button class="generate-btn" onclick="generateMessage()">Generate Message</button>
+
+  <div class="section output" id="output"></div>
 
   <script>
-    const surahs = ["Al-Fatiha", "Al-Baqarah", "Aal-Imran", "An-Nisa", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus", "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Ta-Ha", "Al-Anbiya", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum", "Luqman", "As-Sajda", "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir", "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiya", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf", "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqia", "Al-Hadid", "Al-Mujadila", "Al-Hashr", "Al-Mumtahina", "As-Saff", "Al-Jumu'a", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqa", "Al-Ma'arij", "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyama", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa", "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad", "Ash-Shams", "Al-Layl", "Ad-Duhaa", "Ash-Sharh", "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyina", "Az-Zalzalah", "Al-Adiyat", "Al-Qari'a", "At-Takathur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraish", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"];
+    const surahs = [
+      { en: "Al-Fatiha", ar: "الفاتحة" }, { en: "Al-Baqarah", ar: "البقرة" },
+      { en: "Aal-Imran", ar: "آل عمران" }, { en: "An-Nisa", ar: "النساء" },
+      { en: "Al-Ma'idah", ar: "المائدة" }, { en: "Al-An'am", ar: "الأنعام" },
+      { en: "Al-A'raf", ar: "الأعراف" }, { en: "Al-Anfal", ar: "الأنفال" },
+      { en: "At-Tawbah", ar: "التوبة" }, { en: "Yunus", ar: "يونس" },
+      { en: "Hud", ar: "هود" }, { en: "Yusuf", ar: "يوسف" },
+      { en: "Ar-Ra'd", ar: "الرعد" }, { en: "Ibrahim", ar: "إبراهيم" },
+      { en: "Al-Hijr", ar: "الحجر" }, { en: "An-Nahl", ar: "النحل" },
+      { en: "Al-Isra", ar: "الإسراء" }, { en: "Al-Kahf", ar: "الكهف" },
+      { en: "Maryam", ar: "مريم" }, { en: "Ta-Ha", ar: "طه" },
+      { en: "An-Nas", ar: "الناس" }, { en: "Al-Ikhlas", ar: "الإخلاص" }
+    ];
 
-    const surahDropdown = document.getElementById("surah");
-    const studentsList = document.getElementById("studentsList");
-    const outputDiv = document.getElementById("output");
-    const addedAssignments = [];
+    const students = JSON.parse(localStorage.getItem('quranStudents') || '[]');
+    const container = document.getElementById('studentsContainer');
 
-    surahs.forEach(surah => {
-      const opt = document.createElement("option");
-      opt.value = surah;
-      opt.textContent = surah;
-      surahDropdown.appendChild(opt);
-    });
+    function renderStudents() {
+      container.innerHTML = '';
+      students.forEach((student, i) => {
+        const box = document.createElement('div');
+        box.className = 'student-box';
+        box.innerHTML = `
+          <strong>${student.name}</strong>
+          <label>Surah</label>
+          <select class="surah-select">
+            ${surahs.map(s => `<option value="${s.en}">${s.ar} (${s.en})</option>`).join('')}
+          </select>
+          <label><input type="checkbox" class="entire-checkbox" /> Entire Surah</label>
+          <label>From Ayah</label>
+          <input type="number" class="from-ayah" placeholder="e.g. 1">
+          <label>To Ayah</label>
+          <input type="number" class="to-ayah" placeholder="e.g. 10">
+        `;
+        container.appendChild(box);
+      });
+    }
 
-    function addStudentAssignment() {
-      const name = document.getElementById("studentName").value.trim();
-      const surah = document.getElementById("surah").value;
-      const from = document.getElementById("fromAyah").value;
-      const to = document.getElementById("toAyah").value;
-      const entire = document.getElementById("entireSurah").checked;
-
-      if (!name || !surah || (!entire && (!from || !to))) {
-        alert("Please fill all required fields.");
-        return;
+    function addStudentToList() {
+      const input = document.getElementById('newStudent');
+      const name = input.value.trim();
+      if (name) {
+        students.push({ name });
+        localStorage.setItem('quranStudents', JSON.stringify(students));
+        renderStudents();
+        input.value = '';
       }
-
-      addedAssignments.push({ name, surah, from, to, entire });
-
-      const block = document.createElement("div");
-      block.className = "student-block";
-      block.innerHTML = `<strong>${name}</strong><br>
-        📖 Surah: ${surah}<br>
-        🔢 ${entire ? 'Entire Surah' : `Ayahs: ${from} to ${to}`}`;
-      studentsList.appendChild(block);
-
-      // Reset inputs
-      document.getElementById("studentName").value = "";
-      document.getElementById("fromAyah").value = "";
-      document.getElementById("toAyah").value = "";
-      document.getElementById("entireSurah").checked = false;
     }
 
     function generateMessage() {
-      let message = "📚 Quran Homework Assignment\n\n";
-      addedAssignments.forEach(({ name, surah, from, to, entire }) => {
-        message += `👦 Student: ${name}\n📖 Surah: ${surah}\n`;
-        message += entire ? `🔢 Entire Surah\n\n` : `🔢 Ayahs: ${from} to ${to}\n\n`;
+      const studentBoxes = document.querySelectorAll('.student-box');
+      let msg = '📚 Quran Homework Assignment\n\n';
+      let msgAr = '📚 واجب تحفيظ القرآن\n\n';
+
+      studentBoxes.forEach(box => {
+        const name = box.querySelector('strong').textContent;
+        const surah = box.querySelector('.surah-select').value;
+        const surahAr = surahs.find(s => s.en === surah).ar;
+        const entire = box.querySelector('.entire-checkbox').checked;
+        const from = box.querySelector('.from-ayah').value;
+        const to = box.querySelector('.to-ayah').value;
+
+        msg += `👦 Student: ${name}\n📖 Surah: ${surah}\n`;
+        msgAr += `👦 الطالب: ${name}\n📖 السورة: ${surahAr}\n`;
+
+        if (entire) {
+          msg += `🔢 Entire Surah\n\n`;
+          msgAr += `🔢 السورة كاملة\n\n`;
+        } else {
+          msg += `🔢 Ayahs: ${from} to ${to}\n\n`;
+          msgAr += `🔢 الآيات: ${from} إلى ${to}\n\n`;
+        }
       });
-      message += "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!";
-      outputDiv.textContent = message;
+
+      msg += "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!\n\n";
+      msgAr += "📌 الرجاء متابعة طفلك في المراجعة والحفظ.\nجزاكم الله خيرًا!";
+
+      document.getElementById('output').textContent = msg + '\n' + msgAr;
     }
+
+    renderStudents();
   </script>
 </body>
 </html>
