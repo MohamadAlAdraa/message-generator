@@ -62,6 +62,10 @@
       font-size: 1rem;
     }
 
+    .add-btn:hover, .generate-btn:hover {
+      background-color: #0056b3;
+    }
+
     .delete-btn {
       float: right;
       background: red;
@@ -70,6 +74,10 @@
       padding: 0.3rem 0.6rem;
       border-radius: 4px;
       cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background-color: #dc3545;
     }
 
     .delete-assignment-btn {
@@ -82,11 +90,57 @@
       cursor: pointer;
     }
 
+    .delete-assignment-btn:hover {
+      background-color: #c82333;
+    }
+
     .output {
       white-space: pre-line;
       background-color: #eef;
       padding: 1rem;
       border-radius: 8px;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .copy-btn:hover {
+      background-color: #218838;
+    }
+
+    .copy-btn.copied {
+      background-color: #6c757d;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .checkbox-container label {
+      margin: 0;
+      font-weight: normal;
     }
 
     .inline {
@@ -94,6 +148,12 @@
       align-items: center;
       gap: 0.5rem;
       margin-top: 0.5rem;
+    }
+
+    hr {
+      margin: 1rem 0 0.5rem 0;
+      border: none;
+      border-top: 1px solid #e0e0e0;
     }
   </style>
 </head>
@@ -110,7 +170,13 @@
 
   <button class="generate-btn" onclick="generateMessage()">Generate Message</button>
 
-  <div class="section output" id="output"></div>
+  <div class="section output" id="output" style="display: none;">
+    <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">
+      <span id="copyIcon">📋</span>
+      <span id="copyText">Copy</span>
+    </button>
+    <div id="outputContent"></div>
+  </div>
 
   <script>
     const surahs = [
@@ -173,14 +239,14 @@
       wrapper.innerHTML = `
         <label>Surah</label>
         <select onchange="students[${studentIndex}].assignments[${assignmentIndex}].surah = this.value; save()">${options}</select>
-        <div class="inline">
-          <input type="checkbox" ${assignment.entire ? 'checked' : ''} onchange="
+        <div class="checkbox-container">
+          <input type="checkbox" id="entire-${studentIndex}-${assignmentIndex}" ${assignment.entire ? 'checked' : ''} onchange="
             students[${studentIndex}].assignments[${assignmentIndex}].entire = this.checked;
             this.parentElement.parentElement.querySelector('.from-ayah').disabled = this.checked;
             this.parentElement.parentElement.querySelector('.to-ayah').disabled = this.checked;
             save();
           ">
-          <label>Entire Surah</label>
+          <label for="entire-${studentIndex}-${assignmentIndex}">Entire Surah</label>
         </div>
         <input type="number" class="from-ayah" placeholder="From Ayah" value="${assignment.from || ''}" ${assignment.entire ? 'disabled' : ''} onchange="students[${studentIndex}].assignments[${assignmentIndex}].from = this.value; save()">
         <input type="number" class="to-ayah" placeholder="To Ayah" value="${assignment.to || ''}" ${assignment.entire ? 'disabled' : ''} onchange="students[${studentIndex}].assignments[${assignmentIndex}].to = this.value; save()">
@@ -239,7 +305,67 @@
       });
       msg += "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!\n\n";
       msgAr += "📌 الرجاء متابعة طفلك في المراجعة والحفظ.\nجزاكم الله خيرًا!";
-      document.getElementById('output').textContent = msg + '\n' + msgAr;
+      
+      const outputDiv = document.getElementById('output');
+      const outputContent = document.getElementById('outputContent');
+      outputContent.textContent = msg + '\n' + msgAr;
+      outputDiv.style.display = 'block';
+      
+      // Reset copy button state
+      const copyBtn = document.getElementById('copyBtn');
+      const copyText = document.getElementById('copyText');
+      const copyIcon = document.getElementById('copyIcon');
+      copyBtn.classList.remove('copied');
+      copyText.textContent = 'Copy';
+      copyIcon.textContent = '📋';
+    }
+
+    function copyToClipboard() {
+      const outputContent = document.getElementById('outputContent');
+      const text = outputContent.textContent;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const copyBtn = document.getElementById('copyBtn');
+        const copyText = document.getElementById('copyText');
+        const copyIcon = document.getElementById('copyIcon');
+        
+        copyBtn.classList.add('copied');
+        copyText.textContent = 'Copied!';
+        copyIcon.textContent = '✓';
+        
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyText.textContent = 'Copy';
+          copyIcon.textContent = '📋';
+        }, 2000);
+      }).catch(err => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          const copyBtn = document.getElementById('copyBtn');
+          const copyText = document.getElementById('copyText');
+          const copyIcon = document.getElementById('copyIcon');
+          
+          copyBtn.classList.add('copied');
+          copyText.textContent = 'Copied!';
+          copyIcon.textContent = '✓';
+          
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyText.textContent = 'Copy';
+            copyIcon.textContent = '📋';
+          }, 2000);
+        } catch (err) {
+          alert('Failed to copy text');
+        }
+        document.body.removeChild(textArea);
+      });
     }
 
     renderStudents();
