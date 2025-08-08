@@ -195,7 +195,6 @@
           <span id="copyIcon">📋</span>
           <span id="copyText">Copy</span>
         </button>
-        
       </div>
       <div id="outputContent"></div>
     </div>
@@ -517,12 +516,13 @@
       }
 
       function generateMessage() {
-        let msg = "📚 Quran Homework Assignment\n\n";
-        let msgAr = "📚 واجب تحفيظ القرآن\n\n";
+        let msg =
+          "📚 Quran Homework Assignment\n Al Salam Alaykum Warahmatullahi Wabarakatuh\n";
+        let msgAr = "📚 واجب تحفيظ القرآن\n السلام عليكم ورحمة الله وبركاته\n";
         students.forEach((student, index) => {
           if (index > 0) {
-            msg += `\n${"-".repeat(50)}\n\n`;
-            msgAr += `\n${"-".repeat(50)}\n\n`;
+            msg += `\n${"-".repeat(30)}\n\n`;
+            msgAr += `\n${"-".repeat(30)}\n\n`;
           }
           msg += `👦 Student: ${student.name}\n`;
           msgAr += `👦 الطالب: ${student.name}\n`;
@@ -594,7 +594,7 @@
 
         const outputDiv = document.getElementById("output");
         const outputContent = document.getElementById("outputContent");
-        outputContent.textContent = msg + "\n" + msgAr;
+        outputContent.textContent = msgAr + "\n" + msg;
         outputDiv.style.display = "block";
 
         // Reset copy button state
