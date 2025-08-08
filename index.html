@@ -103,7 +103,9 @@
     }
 
     .copy-btn {
-      position: relative;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
       background-color: #28a745;
       color: white;
       border: none;
@@ -111,11 +113,9 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 0.9rem;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 0.3rem;
-      margin-right: 0.5rem;
-      margin-top: 0.5rem;
     }
 
     .copy-btn:hover {
@@ -124,14 +124,6 @@
 
     .copy-btn.copied {
       background-color: #6c757d;
-    }
-
-    #whatsappBtn {
-      background-color: #25D366;
-    }
-
-    #whatsappBtn:hover {
-      background-color: #1da851;
     }
 
     .checkbox-container {
@@ -149,6 +141,13 @@
     .checkbox-container label {
       margin: 0;
       font-weight: normal;
+    }
+
+    .inline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
     }
 
     hr {
@@ -176,15 +175,40 @@
       <span id="copyIcon">📋</span>
       <span id="copyText">Copy</span>
     </button>
-    <button class="copy-btn" id="whatsappBtn" onclick="shareOnWhatsApp()">
-      <span>📤</span>
-      <span>WhatsApp</span>
-    </button>
     <div id="outputContent"></div>
   </div>
 
   <script>
-    const surahs = [ /* --- OMITTED HERE FOR BREVITY --- */ ];
+    const surahs = [
+      ["Al-Fatiha", "الفاتحة"], ["Al-Baqarah", "البقرة"], ["Aal-Imran", "آل عمران"], ["An-Nisa", "النساء"],
+      ["Al-Ma'idah", "المائدة"], ["Al-An'am", "الأنعام"], ["Al-A'raf", "الأعراف"], ["Al-Anfal", "الأنفال"],
+      ["At-Tawbah", "التوبة"], ["Yunus", "يونس"], ["Hud", "هود"], ["Yusuf", "يوسف"], ["Ar-Ra'd", "الرعد"],
+      ["Ibrahim", "إبراهيم"], ["Al-Hijr", "الحجر"], ["An-Nahl", "النحل"], ["Al-Isra", "الإسراء"],
+      ["Al-Kahf", "الكهف"], ["Maryam", "مريم"], ["Ta-Ha", "طه"], ["Al-Anbiya", "الأنبياء"],
+      ["Al-Hajj", "الحج"], ["Al-Mu'minun", "المؤمنون"], ["An-Nur", "النور"], ["Al-Furqan", "الفرقان"],
+      ["Ash-Shu'ara", "الشعراء"], ["An-Naml", "النمل"], ["Al-Qasas", "القصص"], ["Al-Ankabut", "العنكبوت"],
+      ["Ar-Rum", "الروم"], ["Luqman", "لقمان"], ["As-Sajda", "السجدة"], ["Al-Ahzab", "الأحزاب"],
+      ["Saba", "سبأ"], ["Fatir", "فاطر"], ["Ya-Sin", "يس"], ["As-Saffat", "الصافات"],
+      ["Sad", "ص"], ["Az-Zumar", "الزمر"], ["Ghafir", "غافر"], ["Fussilat", "فصلت"],
+      ["Ash-Shura", "الشورى"], ["Az-Zukhruf", "الزخرف"], ["Ad-Dukhan", "الدخان"], ["Al-Jathiya", "الجاثية"],
+      ["Al-Ahqaf", "الأحقاف"], ["Muhammad", "محمد"], ["Al-Fath", "الفتح"], ["Al-Hujurat", "الحجرات"],
+      ["Qaf", "ق"], ["Adh-Dhariyat", "الذاريات"], ["At-Tur", "الطور"], ["An-Najm", "النجم"],
+      ["Al-Qamar", "القمر"], ["Ar-Rahman", "الرحمن"], ["Al-Waqi'a", "الواقعة"], ["Al-Hadid", "الحديد"],
+      ["Al-Mujadila", "المجادلة"], ["Al-Hashr", "الحشر"], ["Al-Mumtahina", "الممتحنة"], ["As-Saff", "الصف"],
+      ["Al-Jumua", "الجمعة"], ["Al-Munafiqun", "المنافقون"], ["At-Taghabun", "التغابن"], ["At-Talaq", "الطلاق"],
+      ["At-Tahrim", "التحريم"], ["Al-Mulk", "الملك"], ["Al-Qalam", "القلم"], ["Al-Haqqa", "الحاقة"],
+      ["Al-Ma'arij", "المعارج"], ["Nuh", "نوح"], ["Al-Jinn", "الجن"], ["Al-Muzzammil", "المزمل"],
+      ["Al-Muddaththir", "المدثر"], ["Al-Qiyama", "القيامة"], ["Al-Insan", "الانسان"], ["Al-Mursalat", "المرسلات"],
+      ["An-Naba", "النبأ"], ["An-Nazi'at", "النازعات"], ["Abasa", "عبس"], ["At-Takwir", "التكوير"],
+      ["Al-Infitar", "الإنفطار"], ["Al-Mutaffifin", "المطففين"], ["Al-Inshiqaq", "الإنشقاق"], ["Al-Buruj", "البروج"],
+      ["At-Tariq", "الطارق"], ["Al-Ala", "الأعلى"], ["Al-Ghashiyah", "الغاشية"], ["Al-Fajr", "الفجر"],
+      ["Al-Balad", "البلد"], ["Ash-Shams", "الشمس"], ["Al-Lail", "الليل"], ["Ad-Duhaa", "الضحى"],
+      ["Ash-Sharh", "الشرح"], ["At-Tin", "التين"], ["Al-Alaq", "العلق"], ["Al-Qadr", "القدر"],
+      ["Al-Bayyina", "البينة"], ["Az-Zalzalah", "الزلزلة"], ["Al-Adiyat", "العاديات"], ["Al-Qari'a", "القارعة"],
+      ["At-Takathur", "التكاثر"], ["Al-Asr", "العصر"], ["Al-Humazah", "الهمزة"], ["Al-Fil", "الفيل"],
+      ["Quraish", "قريش"], ["Al-Ma'un", "الماعون"], ["Al-Kawthar", "الكوثر"], ["Al-Kafirun", "الكافرون"],
+      ["An-Nasr", "النصر"], ["Al-Masad", "المسد"], ["Al-Ikhlas", "الإخلاص"], ["Al-Falaq", "الفلق"], ["An-Nas", "الناس"]
+    ];
 
     let students = JSON.parse(localStorage.getItem('quranStudents') || '[]');
 
@@ -281,12 +305,13 @@
       });
       msg += "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!\n\n";
       msgAr += "📌 الرجاء متابعة طفلك في المراجعة والحفظ.\nجزاكم الله خيرًا!";
-
+      
       const outputDiv = document.getElementById('output');
       const outputContent = document.getElementById('outputContent');
       outputContent.textContent = msg + '\n' + msgAr;
       outputDiv.style.display = 'block';
-
+      
+      // Reset copy button state
       const copyBtn = document.getElementById('copyBtn');
       const copyText = document.getElementById('copyText');
       const copyIcon = document.getElementById('copyIcon');
@@ -298,20 +323,23 @@
     function copyToClipboard() {
       const outputContent = document.getElementById('outputContent');
       const text = outputContent.textContent;
-
+      
       navigator.clipboard.writeText(text).then(() => {
         const copyBtn = document.getElementById('copyBtn');
         const copyText = document.getElementById('copyText');
         const copyIcon = document.getElementById('copyIcon');
+        
         copyBtn.classList.add('copied');
         copyText.textContent = 'Copied!';
         copyIcon.textContent = '✓';
+        
         setTimeout(() => {
           copyBtn.classList.remove('copied');
           copyText.textContent = 'Copy';
           copyIcon.textContent = '📋';
         }, 2000);
-      }).catch(() => {
+      }).catch(err => {
+        // Fallback for older browsers
         const textArea = document.createElement('textarea');
         textArea.value = text;
         textArea.style.position = 'fixed';
@@ -320,22 +348,31 @@
         textArea.select();
         try {
           document.execCommand('copy');
-        } catch {
+          const copyBtn = document.getElementById('copyBtn');
+          const copyText = document.getElementById('copyText');
+          const copyIcon = document.getElementById('copyIcon');
+          
+          copyBtn.classList.add('copied');
+          copyText.textContent = 'Copied!';
+          copyIcon.textContent = '✓';
+          
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyText.textContent = 'Copy';
+            copyIcon.textContent = '📋';
+          }, 2000);
+        } catch (err) {
           alert('Failed to copy text');
         }
         document.body.removeChild(textArea);
       });
     }
 
-    function shareOnWhatsApp() {
-      const outputContent = document.getElementById('outputContent');
-      const text = outputContent.textContent;
-      const encodedText = encodeURIComponent(text);
-      const url = `https://wa.me/?text=${encodedText}`;
-      window.open(url, '_blank');
-    }
-
     renderStudents();
   </script>
 </body>
 </html>
+
+
+
+I would like to add share on whatsapp button
