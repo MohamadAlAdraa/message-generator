@@ -1,246 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quran Homework Generator</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background-color: #f3f7fa;
-      color: #333;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quran Homework Generator</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 2rem;
+        background-color: #f3f7fa;
+        color: #333;
+      }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+      h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
 
-    .section {
-      background-color: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
+      .section {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
 
-    .section label {
-      display: block;
-      margin-top: 0.5rem;
-      font-weight: 600;
-    }
+      .section label {
+        display: block;
+        margin-top: 0.5rem;
+        font-weight: 600;
+      }
 
-    .section input,
-    .section select {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.25rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
+      .section input,
+      .section select {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
 
-    .student-box {
-      background-color: #ffffff;
-      border-left: 5px solid #007bff;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-    }
+      .student-box {
+        background-color: #ffffff;
+        border-left: 5px solid #007bff;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+      }
 
-    .add-btn, .generate-btn {
-      display: inline-block;
-      margin-top: 1rem;
-      background-color: #007bff;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+      .add-btn,
+      .generate-btn {
+        display: inline-block;
+        margin-top: 1rem;
+        background-color: #007bff;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
 
-    .add-btn:hover, .generate-btn:hover {
-      background-color: #0056b3;
-    }
+      .add-btn:hover,
+      .generate-btn:hover {
+        background-color: #0056b3;
+      }
 
-    .delete-btn {
-      float: right;
-      background: red;
-      color: white;
-      border: none;
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+      .delete-btn {
+        float: right;
+        background: red;
+        color: white;
+        border: none;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
 
-    .delete-btn:hover {
-      background-color: #dc3545;
-    }
+      .delete-btn:hover {
+        background-color: #dc3545;
+      }
 
-    .delete-assignment-btn {
-      margin-top: 0.5rem;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
-    }
+      .delete-assignment-btn {
+        margin-top: 0.5rem;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0.3rem 0.6rem;
+        cursor: pointer;
+      }
 
-    .delete-assignment-btn:hover {
-      background-color: #c82333;
-    }
+      .delete-assignment-btn:hover {
+        background-color: #c82333;
+      }
 
-    .output {
-      white-space: pre-line;
-      background-color: #eef;
-      padding: 1rem;
-      border-radius: 8px;
-      position: relative;
-    }
+      .output {
+        white-space: pre-line;
+        background-color: #eef;
+        padding: 1rem;
+        border-radius: 8px;
+        position: relative;
+      }
 
-    .copy-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
+      .copy-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
 
-    .copy-btn:hover {
-      background-color: #218838;
-    }
+      .copy-btn:hover {
+        background-color: #218838;
+      }
 
-    .copy-btn.copied {
-      background-color: #6c757d;
-    }
+      .copy-btn.copied {
+        background-color: #6c757d;
+      }
 
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
 
-    .checkbox-container input[type="checkbox"] {
-      width: auto;
-      margin: 0;
-    }
+      .checkbox-container input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
 
-    .checkbox-container label {
-      margin: 0;
-      font-weight: normal;
-    }
+      .checkbox-container label {
+        margin: 0;
+        font-weight: normal;
+      }
 
-    .inline {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
+      .inline {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
 
-    hr {
-      margin: 1rem 0 0.5rem 0;
-      border: none;
-      border-top: 1px solid #e0e0e0;
-    }
-  </style>
-</head>
-<body>
-  <h1>📚 Quran Homework Generator</h1>
+      hr {
+        margin: 1rem 0 0.5rem 0;
+        border: none;
+        border-top: 1px solid #e0e0e0;
+      }
 
-  <div class="section">
-    <label for="newStudent">Add New Student</label>
-    <input type="text" id="newStudent" placeholder="e.g. Mohamad" />
-    <button class="add-btn" onclick="addStudentToList()">Add Student</button>
-  </div>
+      .share-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
 
-  <div class="section" id="studentsContainer"></div>
+      .output-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📚 Quran Homework Generator</h1>
 
-  <button class="generate-btn" onclick="generateMessage()">Generate Message</button>
+    <div class="section">
+      <label for="newStudent">Add New Student</label>
+      <input type="text" id="newStudent" placeholder="e.g. Mohamad" />
+      <button class="add-btn" onclick="addStudentToList()">Add Student</button>
+    </div>
 
-  <div class="section output" id="output" style="display: none;">
-    <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">
-      <span id="copyIcon">📋</span>
-      <span id="copyText">Copy</span>
+    <div class="section" id="studentsContainer"></div>
+
+    <button class="generate-btn" onclick="generateMessage()">
+      Generate Message
     </button>
-    <div id="outputContent"></div>
-  </div>
 
-  <script>
-    const surahs = [
-      ["Al-Fatiha", "الفاتحة"], ["Al-Baqarah", "البقرة"], ["Aal-Imran", "آل عمران"], ["An-Nisa", "النساء"],
-      ["Al-Ma'idah", "المائدة"], ["Al-An'am", "الأنعام"], ["Al-A'raf", "الأعراف"], ["Al-Anfal", "الأنفال"],
-      ["At-Tawbah", "التوبة"], ["Yunus", "يونس"], ["Hud", "هود"], ["Yusuf", "يوسف"], ["Ar-Ra'd", "الرعد"],
-      ["Ibrahim", "إبراهيم"], ["Al-Hijr", "الحجر"], ["An-Nahl", "النحل"], ["Al-Isra", "الإسراء"],
-      ["Al-Kahf", "الكهف"], ["Maryam", "مريم"], ["Ta-Ha", "طه"], ["Al-Anbiya", "الأنبياء"],
-      ["Al-Hajj", "الحج"], ["Al-Mu'minun", "المؤمنون"], ["An-Nur", "النور"], ["Al-Furqan", "الفرقان"],
-      ["Ash-Shu'ara", "الشعراء"], ["An-Naml", "النمل"], ["Al-Qasas", "القصص"], ["Al-Ankabut", "العنكبوت"],
-      ["Ar-Rum", "الروم"], ["Luqman", "لقمان"], ["As-Sajda", "السجدة"], ["Al-Ahzab", "الأحزاب"],
-      ["Saba", "سبأ"], ["Fatir", "فاطر"], ["Ya-Sin", "يس"], ["As-Saffat", "الصافات"],
-      ["Sad", "ص"], ["Az-Zumar", "الزمر"], ["Ghafir", "غافر"], ["Fussilat", "فصلت"],
-      ["Ash-Shura", "الشورى"], ["Az-Zukhruf", "الزخرف"], ["Ad-Dukhan", "الدخان"], ["Al-Jathiya", "الجاثية"],
-      ["Al-Ahqaf", "الأحقاف"], ["Muhammad", "محمد"], ["Al-Fath", "الفتح"], ["Al-Hujurat", "الحجرات"],
-      ["Qaf", "ق"], ["Adh-Dhariyat", "الذاريات"], ["At-Tur", "الطور"], ["An-Najm", "النجم"],
-      ["Al-Qamar", "القمر"], ["Ar-Rahman", "الرحمن"], ["Al-Waqi'a", "الواقعة"], ["Al-Hadid", "الحديد"],
-      ["Al-Mujadila", "المجادلة"], ["Al-Hashr", "الحشر"], ["Al-Mumtahina", "الممتحنة"], ["As-Saff", "الصف"],
-      ["Al-Jumua", "الجمعة"], ["Al-Munafiqun", "المنافقون"], ["At-Taghabun", "التغابن"], ["At-Talaq", "الطلاق"],
-      ["At-Tahrim", "التحريم"], ["Al-Mulk", "الملك"], ["Al-Qalam", "القلم"], ["Al-Haqqa", "الحاقة"],
-      ["Al-Ma'arij", "المعارج"], ["Nuh", "نوح"], ["Al-Jinn", "الجن"], ["Al-Muzzammil", "المزمل"],
-      ["Al-Muddaththir", "المدثر"], ["Al-Qiyama", "القيامة"], ["Al-Insan", "الانسان"], ["Al-Mursalat", "المرسلات"],
-      ["An-Naba", "النبأ"], ["An-Nazi'at", "النازعات"], ["Abasa", "عبس"], ["At-Takwir", "التكوير"],
-      ["Al-Infitar", "الإنفطار"], ["Al-Mutaffifin", "المطففين"], ["Al-Inshiqaq", "الإنشقاق"], ["Al-Buruj", "البروج"],
-      ["At-Tariq", "الطارق"], ["Al-Ala", "الأعلى"], ["Al-Ghashiyah", "الغاشية"], ["Al-Fajr", "الفجر"],
-      ["Al-Balad", "البلد"], ["Ash-Shams", "الشمس"], ["Al-Lail", "الليل"], ["Ad-Duhaa", "الضحى"],
-      ["Ash-Sharh", "الشرح"], ["At-Tin", "التين"], ["Al-Alaq", "العلق"], ["Al-Qadr", "القدر"],
-      ["Al-Bayyina", "البينة"], ["Az-Zalzalah", "الزلزلة"], ["Al-Adiyat", "العاديات"], ["Al-Qari'a", "القارعة"],
-      ["At-Takathur", "التكاثر"], ["Al-Asr", "العصر"], ["Al-Humazah", "الهمزة"], ["Al-Fil", "الفيل"],
-      ["Quraish", "قريش"], ["Al-Ma'un", "الماعون"], ["Al-Kawthar", "الكوثر"], ["Al-Kafirun", "الكافرون"],
-      ["An-Nasr", "النصر"], ["Al-Masad", "المسد"], ["Al-Ikhlas", "الإخلاص"], ["Al-Falaq", "الفلق"], ["An-Nas", "الناس"]
-    ];
+    <div class="section output" id="output" style="display: none">
+      <div class="output-buttons">
+        <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">
+          <span id="copyIcon">📋</span>
+          <span id="copyText">Copy</span>
+        </button>
+        <button class="share-btn" onclick="shareOnWhatsApp()">
+          <span id="shareIcon">📤</span>
+          <span id="shareText">WhatsApp</span>
+        </button>
+      </div>
+      <div id="outputContent"></div>
+    </div>
 
-    let students = JSON.parse(localStorage.getItem('quranStudents') || '[]');
+    <script>
+      const surahs = [
+        ["Al-Fatiha", "الفاتحة"],
+        ["Al-Baqarah", "البقرة"],
+        ["Aal-Imran", "آل عمران"],
+        ["An-Nisa", "النساء"],
+        ["Al-Ma'idah", "المائدة"],
+        ["Al-An'am", "الأنعام"],
+        ["Al-A'raf", "الأعراف"],
+        ["Al-Anfal", "الأنفال"],
+        ["At-Tawbah", "التوبة"],
+        ["Yunus", "يونس"],
+        ["Hud", "هود"],
+        ["Yusuf", "يوسف"],
+        ["Ar-Ra'd", "الرعد"],
+        ["Ibrahim", "إبراهيم"],
+        ["Al-Hijr", "الحجر"],
+        ["An-Nahl", "النحل"],
+        ["Al-Isra", "الإسراء"],
+        ["Al-Kahf", "الكهف"],
+        ["Maryam", "مريم"],
+        ["Ta-Ha", "طه"],
+        ["Al-Anbiya", "الأنبياء"],
+        ["Al-Hajj", "الحج"],
+        ["Al-Mu'minun", "المؤمنون"],
+        ["An-Nur", "النور"],
+        ["Al-Furqan", "الفرقان"],
+        ["Ash-Shu'ara", "الشعراء"],
+        ["An-Naml", "النمل"],
+        ["Al-Qasas", "القصص"],
+        ["Al-Ankabut", "العنكبوت"],
+        ["Ar-Rum", "الروم"],
+        ["Luqman", "لقمان"],
+        ["As-Sajda", "السجدة"],
+        ["Al-Ahzab", "الأحزاب"],
+        ["Saba", "سبأ"],
+        ["Fatir", "فاطر"],
+        ["Ya-Sin", "يس"],
+        ["As-Saffat", "الصافات"],
+        ["Sad", "ص"],
+        ["Az-Zumar", "الزمر"],
+        ["Ghafir", "غافر"],
+        ["Fussilat", "فصلت"],
+        ["Ash-Shura", "الشورى"],
+        ["Az-Zukhruf", "الزخرف"],
+        ["Ad-Dukhan", "الدخان"],
+        ["Al-Jathiya", "الجاثية"],
+        ["Al-Ahqaf", "الأحقاف"],
+        ["Muhammad", "محمد"],
+        ["Al-Fath", "الفتح"],
+        ["Al-Hujurat", "الحجرات"],
+        ["Qaf", "ق"],
+        ["Adh-Dhariyat", "الذاريات"],
+        ["At-Tur", "الطور"],
+        ["An-Najm", "النجم"],
+        ["Al-Qamar", "القمر"],
+        ["Ar-Rahman", "الرحمن"],
+        ["Al-Waqi'a", "الواقعة"],
+        ["Al-Hadid", "الحديد"],
+        ["Al-Mujadila", "المجادلة"],
+        ["Al-Hashr", "الحشر"],
+        ["Al-Mumtahina", "الممتحنة"],
+        ["As-Saff", "الصف"],
+        ["Al-Jumua", "الجمعة"],
+        ["Al-Munafiqun", "المنافقون"],
+        ["At-Taghabun", "التغابن"],
+        ["At-Talaq", "الطلاق"],
+        ["At-Tahrim", "التحريم"],
+        ["Al-Mulk", "الملك"],
+        ["Al-Qalam", "القلم"],
+        ["Al-Haqqa", "الحاقة"],
+        ["Al-Ma'arij", "المعارج"],
+        ["Nuh", "نوح"],
+        ["Al-Jinn", "الجن"],
+        ["Al-Muzzammil", "المزمل"],
+        ["Al-Muddaththir", "المدثر"],
+        ["Al-Qiyama", "القيامة"],
+        ["Al-Insan", "الانسان"],
+        ["Al-Mursalat", "المرسلات"],
+        ["An-Naba", "النبأ"],
+        ["An-Nazi'at", "النازعات"],
+        ["Abasa", "عبس"],
+        ["At-Takwir", "التكوير"],
+        ["Al-Infitar", "الإنفطار"],
+        ["Al-Mutaffifin", "المطففين"],
+        ["Al-Inshiqaq", "الإنشقاق"],
+        ["Al-Buruj", "البروج"],
+        ["At-Tariq", "الطارق"],
+        ["Al-Ala", "الأعلى"],
+        ["Al-Ghashiyah", "الغاشية"],
+        ["Al-Fajr", "الفجر"],
+        ["Al-Balad", "البلد"],
+        ["Ash-Shams", "الشمس"],
+        ["Al-Lail", "الليل"],
+        ["Ad-Duhaa", "الضحى"],
+        ["Ash-Sharh", "الشرح"],
+        ["At-Tin", "التين"],
+        ["Al-Alaq", "العلق"],
+        ["Al-Qadr", "القدر"],
+        ["Al-Bayyina", "البينة"],
+        ["Az-Zalzalah", "الزلزلة"],
+        ["Al-Adiyat", "العاديات"],
+        ["Al-Qari'a", "القارعة"],
+        ["At-Takathur", "التكاثر"],
+        ["Al-Asr", "العصر"],
+        ["Al-Humazah", "الهمزة"],
+        ["Al-Fil", "الفيل"],
+        ["Quraish", "قريش"],
+        ["Al-Ma'un", "الماعون"],
+        ["Al-Kawthar", "الكوثر"],
+        ["Al-Kafirun", "الكافرون"],
+        ["An-Nasr", "النصر"],
+        ["Al-Masad", "المسد"],
+        ["Al-Ikhlas", "الإخلاص"],
+        ["Al-Falaq", "الفلق"],
+        ["An-Nas", "الناس"],
+      ];
 
-    function save() {
-      localStorage.setItem('quranStudents', JSON.stringify(students));
-    }
+      let students = JSON.parse(localStorage.getItem("quranStudents") || "[]");
 
-    function renderStudents() {
-      const container = document.getElementById('studentsContainer');
-      container.innerHTML = '';
-      students.forEach((student, i) => {
-        const box = document.createElement('div');
-        box.className = 'student-box';
-        box.innerHTML = `<strong>${student.name}</strong>
+      function save() {
+        localStorage.setItem("quranStudents", JSON.stringify(students));
+      }
+
+      function renderStudents() {
+        const container = document.getElementById("studentsContainer");
+        container.innerHTML = "";
+        students.forEach((student, i) => {
+          const box = document.createElement("div");
+          box.className = "student-box";
+          box.innerHTML = `<strong>${student.name}</strong>
           <button class="delete-btn" onclick="deleteStudent(${i})">Delete</button>
           <div id="assignments-${i}"></div>
-          <button class="add-btn" onclick="addAssignment(${i})">➕ Add Surah</button>`;
-        container.appendChild(box);
-        if (!student.assignments) student.assignments = [];
-        student.assignments.forEach((a, j) => renderAssignment(i, a, j));
-      });
-      save();
-    }
+          <button class="add-btn" onclick="addAssignment(${i})">➕ Add Surah</button>
+          <div id="nouraniyah-${i}"></div>
+          <button class="add-btn" onclick="addNouraniyahLesson(${i})">📖 Add Nouraniyah Lesson</button>
+          <div id="hadith-${i}"></div>
+          <button class="add-btn" onclick="addHadith(${i})">📜 Add Hadith</button>`;
+          container.appendChild(box);
+          if (!student.assignments) student.assignments = [];
+          if (!student.nouraniyah) student.nouraniyah = [];
+          if (!student.hadith) student.hadith = [];
+          student.assignments.forEach((a, j) => renderAssignment(i, a, j));
+          student.nouraniyah.forEach((n, j) => renderNouraniyahLesson(i, n, j));
+          student.hadith.forEach((h, j) => renderHadith(i, h, j));
+        });
+        save();
+      }
 
-    function renderAssignment(studentIndex, assignment, assignmentIndex) {
-      const wrapper = document.createElement('div');
-      const options = surahs.map(([en, ar]) => `<option value="${en}" ${assignment.surah === en ? 'selected' : ''}>${ar} (${en})</option>`).join('');
-      wrapper.innerHTML = `
+      function renderAssignment(studentIndex, assignment, assignmentIndex) {
+        const wrapper = document.createElement("div");
+        const options = surahs
+          .map(
+            ([en, ar]) =>
+              `<option value="${en}" ${
+                assignment.surah === en ? "selected" : ""
+              }>${ar} (${en})</option>`
+          )
+          .join("");
+        wrapper.innerHTML = `
         <label>Surah</label>
         <select onchange="students[${studentIndex}].assignments[${assignmentIndex}].surah = this.value; save()">${options}</select>
         <div class="checkbox-container">
-          <input type="checkbox" id="entire-${studentIndex}-${assignmentIndex}" ${assignment.entire ? 'checked' : ''} onchange="
+          <input type="checkbox" id="entire-${studentIndex}-${assignmentIndex}" ${
+          assignment.entire ? "checked" : ""
+        } onchange="
             students[${studentIndex}].assignments[${assignmentIndex}].entire = this.checked;
             this.parentElement.parentElement.querySelector('.from-ayah').disabled = this.checked;
             this.parentElement.parentElement.querySelector('.to-ayah').disabled = this.checked;
@@ -248,8 +376,20 @@
           ">
           <label for="entire-${studentIndex}-${assignmentIndex}">Entire Surah</label>
         </div>
-        <input type="number" class="from-ayah" placeholder="From Ayah" value="${assignment.from || ''}" ${assignment.entire ? 'disabled' : ''} onchange="students[${studentIndex}].assignments[${assignmentIndex}].from = this.value; save()">
-        <input type="number" class="to-ayah" placeholder="To Ayah" value="${assignment.to || ''}" ${assignment.entire ? 'disabled' : ''} onchange="students[${studentIndex}].assignments[${assignmentIndex}].to = this.value; save()">
+        <input type="number" class="from-ayah" placeholder="From Ayah" value="${
+          assignment.from || ""
+        }" ${
+          assignment.entire ? "disabled" : ""
+        } onchange="students[${studentIndex}].assignments[${assignmentIndex}].from = this.value; save()">
+        <input type="number" class="to-ayah" placeholder="To Ayah" value="${
+          assignment.to || ""
+        }" ${
+          assignment.entire ? "disabled" : ""
+        } onchange="students[${studentIndex}].assignments[${assignmentIndex}].to = this.value; save()">
+        <label>Note (Optional)</label>
+        <input type="text" placeholder="e.g. Focus on tajweed, memorize with meaning" value="${
+          assignment.note || ""
+        }" onchange="students[${studentIndex}].assignments[${assignmentIndex}].note = this.value; save()">
         <button class="delete-assignment-btn" onclick="
           if (confirm('Are you sure you want to delete this surah assignment?')) {
             students[${studentIndex}].assignments.splice(${assignmentIndex}, 1);
@@ -258,121 +398,277 @@
         ">🗑️ Remove Surah</button>
         <hr>
       `;
-      document.getElementById(`assignments-${studentIndex}`).appendChild(wrapper);
-    }
-
-    function addStudentToList() {
-      const input = document.getElementById('newStudent');
-      const name = input.value.trim();
-      if (name) {
-        students.push({ name, assignments: [] });
-        input.value = '';
-        renderStudents();
+        document
+          .getElementById(`assignments-${studentIndex}`)
+          .appendChild(wrapper);
       }
-    }
 
-    function deleteStudent(index) {
-      if (confirm('Are you sure you want to delete this student?')) {
-        students.splice(index, 1);
-        renderStudents();
-      }
-    }
-
-    function addAssignment(i) {
-      students[i].assignments.push({ surah: surahs[0][0], from: '', to: '', entire: false });
-      renderStudents();
-    }
-
-    function generateMessage() {
-      let msg = '📚 Quran Homework Assignment\n\n';
-      let msgAr = '📚 واجب تحفيظ القرآن\n\n';
-      students.forEach(student => {
-        msg += `👦 Student: ${student.name}\n`;
-        msgAr += `👦 الطالب: ${student.name}\n`;
-        student.assignments.forEach(a => {
-          const surahPair = surahs.find(([en]) => en === a.surah);
-          const ar = surahPair ? surahPair[1] : a.surah;
-          msg += `📖 Surah: ${a.surah}\n`;
-          msgAr += `📖 السورة: ${ar}\n`;
-          if (a.entire) {
-            msg += `🔢 Entire Surah\n\n`;
-            msgAr += `🔢 السورة كاملة\n\n`;
-          } else {
-            msg += `🔢 Ayahs: ${a.from} to ${a.to}\n\n`;
-            msgAr += `🔢 الآيات: ${a.from} إلى ${a.to}\n\n`;
-          }
-        });
-      });
-      msg += "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!\n\n";
-      msgAr += "📌 الرجاء متابعة طفلك في المراجعة والحفظ.\nجزاكم الله خيرًا!";
-      
-      const outputDiv = document.getElementById('output');
-      const outputContent = document.getElementById('outputContent');
-      outputContent.textContent = msg + '\n' + msgAr;
-      outputDiv.style.display = 'block';
-      
-      // Reset copy button state
-      const copyBtn = document.getElementById('copyBtn');
-      const copyText = document.getElementById('copyText');
-      const copyIcon = document.getElementById('copyIcon');
-      copyBtn.classList.remove('copied');
-      copyText.textContent = 'Copy';
-      copyIcon.textContent = '📋';
-    }
-
-    function copyToClipboard() {
-      const outputContent = document.getElementById('outputContent');
-      const text = outputContent.textContent;
-      
-      navigator.clipboard.writeText(text).then(() => {
-        const copyBtn = document.getElementById('copyBtn');
-        const copyText = document.getElementById('copyText');
-        const copyIcon = document.getElementById('copyIcon');
-        
-        copyBtn.classList.add('copied');
-        copyText.textContent = 'Copied!';
-        copyIcon.textContent = '✓';
-        
-        setTimeout(() => {
-          copyBtn.classList.remove('copied');
-          copyText.textContent = 'Copy';
-          copyIcon.textContent = '📋';
-        }, 2000);
-      }).catch(err => {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand('copy');
-          const copyBtn = document.getElementById('copyBtn');
-          const copyText = document.getElementById('copyText');
-          const copyIcon = document.getElementById('copyIcon');
-          
-          copyBtn.classList.add('copied');
-          copyText.textContent = 'Copied!';
-          copyIcon.textContent = '✓';
-          
-          setTimeout(() => {
-            copyBtn.classList.remove('copied');
-            copyText.textContent = 'Copy';
-            copyIcon.textContent = '📋';
-          }, 2000);
-        } catch (err) {
-          alert('Failed to copy text');
+      function addStudentToList() {
+        const input = document.getElementById("newStudent");
+        const name = input.value.trim();
+        if (name) {
+          students.push({ name, assignments: [], nouraniyah: [], hadith: [] });
+          input.value = "";
+          renderStudents();
         }
-        document.body.removeChild(textArea);
-      });
-    }
+      }
 
-    renderStudents();
-  </script>
-</body>
+      function deleteStudent(index) {
+        if (confirm("Are you sure you want to delete this student?")) {
+          students.splice(index, 1);
+          renderStudents();
+        }
+      }
+
+      function addAssignment(i) {
+        students[i].assignments.push({
+          surah: surahs[0][0],
+          from: "",
+          to: "",
+          entire: false,
+          note: "",
+        });
+        renderStudents();
+      }
+
+      function addNouraniyahLesson(i) {
+        students[i].nouraniyah.push({
+          lessonNumber: "",
+          title: "",
+          from: "",
+          to: "",
+          note: "",
+        });
+        renderStudents();
+      }
+
+      function addHadith(i) {
+        students[i].hadith.push({
+          hadithNumber: "",
+          title: "",
+          from: "",
+          to: "",
+          note: "",
+        });
+        renderStudents();
+      }
+
+      function renderNouraniyahLesson(studentIndex, lesson, lessonIndex) {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = `
+        <label>Nouraniyah Lesson Number</label>
+        <input type="number" placeholder="Lesson number" value="${
+          lesson.lessonNumber || ""
+        }" onchange="students[${studentIndex}].nouraniyah[${lessonIndex}].lessonNumber = this.value; save()">
+        <label>Lesson Title</label>
+        <input type="text" placeholder="e.g. Lesson 1 - Alif" value="${
+          lesson.title || ""
+        }" onchange="students[${studentIndex}].nouraniyah[${lessonIndex}].title = this.value; save()">
+        <input type="number" placeholder="From Page" value="${
+          lesson.from || ""
+        }" onchange="students[${studentIndex}].nouraniyah[${lessonIndex}].from = this.value; save()">
+        <input type="number" placeholder="To Page" value="${
+          lesson.to || ""
+        }" onchange="students[${studentIndex}].nouraniyah[${lessonIndex}].to = this.value; save()">
+        <label>Note (Optional)</label>
+        <input type="text" placeholder="e.g. Practice pronunciation, focus on specific letters" value="${
+          lesson.note || ""
+        }" onchange="students[${studentIndex}].nouraniyah[${lessonIndex}].note = this.value; save()">
+        <button class="delete-assignment-btn" onclick="
+          if (confirm('Are you sure you want to delete this Nouraniyah lesson?')) {
+            students[${studentIndex}].nouraniyah.splice(${lessonIndex}, 1);
+            renderStudents();
+          }
+        ">🗑️ Remove Nouraniyah Lesson</button>
+        <hr>
+      `;
+        document
+          .getElementById(`nouraniyah-${studentIndex}`)
+          .appendChild(wrapper);
+      }
+
+      function renderHadith(studentIndex, hadith, hadithIndex) {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = `
+        <label>Hadith Number (1-40)</label>
+        <input type="number" min="1" max="40" placeholder="Hadith number" value="${
+          hadith.hadithNumber || ""
+        }" onchange="students[${studentIndex}].hadith[${hadithIndex}].hadithNumber = this.value; save()">
+        <label>Hadith Title</label>
+        <input type="text" placeholder="e.g. Hadith 1 - Actions are by intentions" value="${
+          hadith.title || ""
+        }" onchange="students[${studentIndex}].hadith[${hadithIndex}].title = this.value; save()">
+        <input type="number" placeholder="From Page" value="${
+          hadith.from || ""
+        }" onchange="students[${studentIndex}].hadith[${hadithIndex}].from = this.value; save()">
+        <input type="number" placeholder="To Page" value="${
+          hadith.to || ""
+        }" onchange="students[${studentIndex}].hadith[${hadithIndex}].to = this.value; save()">
+        <label>Note (Optional)</label>
+        <input type="text" placeholder="e.g. Memorize with meaning, understand the lesson" value="${
+          hadith.note || ""
+        }" onchange="students[${studentIndex}].hadith[${hadithIndex}].note = this.value; save()">
+        <button class="delete-assignment-btn" onclick="
+          if (confirm('Are you sure you want to delete this Hadith?')) {
+            students[${studentIndex}].hadith.splice(${hadithIndex}, 1);
+            renderStudents();
+          }
+        ">🗑️ Remove Hadith</button>
+        <hr>
+      `;
+        document.getElementById(`hadith-${studentIndex}`).appendChild(wrapper);
+      }
+
+      function generateMessage() {
+        let msg = "📚 Quran Homework Assignment\n\n";
+        let msgAr = "📚 واجب تحفيظ القرآن\n\n";
+        students.forEach((student, index) => {
+          if (index > 0) {
+            msg += `\n${"-".repeat(50)}\n\n`;
+            msgAr += `\n${"-".repeat(50)}\n\n`;
+          }
+          msg += `👦 Student: ${student.name}\n`;
+          msgAr += `👦 الطالب: ${student.name}\n`;
+          student.assignments.forEach((a) => {
+            const surahPair = surahs.find(([en]) => en === a.surah);
+            const ar = surahPair ? surahPair[1] : a.surah;
+            msg += `📖 Surah: ${a.surah}\n`;
+            msgAr += `📖 السورة: ${ar}\n`;
+            if (a.entire) {
+              msg += `🔢 Entire Surah\n`;
+              msgAr += `🔢 السورة كاملة\n`;
+            } else {
+              msg += `🔢 Ayahs: ${a.from} to ${a.to}\n`;
+              msgAr += `🔢 الآيات: ${a.from} إلى ${a.to}\n`;
+            }
+            if (a.note) {
+              msg += `📝 Note: ${a.note}\n`;
+              msgAr += `📝 ملاحظة: ${a.note}\n`;
+            }
+            msg += `\n`;
+            msgAr += `\n`;
+          });
+          student.nouraniyah.forEach((n) => {
+            msg += `📖 Nouraniyah Lesson : ${n.lessonNumber} ${
+              n.title ? `- ${n.title}` : ""
+            }\n`;
+            msgAr += `📖 درس النورانية ${n.lessonNumber} ${
+              n.title ? `- ${n.title}` : ""
+            }\n`;
+            if (n.from && n.to) {
+              msg += `🔢 Pages: ${n.from} to ${n.to}\n`;
+              msgAr += `🔢 الصفحات: ${n.from} إلى ${n.to}\n`;
+            } else {
+              msg += `🔢 Complete Lesson\n`;
+              msgAr += `🔢 الدرس كامل\n`;
+            }
+            if (n.note) {
+              msg += `📝 Note: ${n.note}\n`;
+              msgAr += `📝 ملاحظة: ${n.note}\n`;
+            }
+            msg += `\n`;
+            msgAr += `\n`;
+          });
+          student.hadith.forEach((h) => {
+            msg += `📜 Hadith : ${h.hadithNumber} ${
+              h.title ? `- ${h.title}` : ""
+            }\n`;
+            msgAr += `📜 حديث : ${h.hadithNumber} ${
+              h.title ? `- ${h.title}` : ""
+            }\n`;
+            if (h.from && h.to) {
+              msg += `🔢 Pages: ${h.from} to ${h.to}\n`;
+              msgAr += `🔢 الصفحات: ${h.from} إلى ${h.to}\n`;
+            } else {
+              msg += `🔢 Complete Hadith\n`;
+              msgAr += `🔢 الحديث كامل\n`;
+            }
+            if (h.note) {
+              msg += `📝 Note: ${h.note}\n`;
+              msgAr += `📝 ملاحظة: ${h.note}\n`;
+            }
+            msg += `\n`;
+            msgAr += `\n`;
+          });
+        });
+        msg +=
+          "📌 Please help your child review and memorize this section.\nJazakum Allahu Khairan!\n\n";
+        msgAr += "📌 الرجاء متابعة طفلك في المراجعة والحفظ.\nجزاكم الله خيرًا!";
+
+        const outputDiv = document.getElementById("output");
+        const outputContent = document.getElementById("outputContent");
+        outputContent.textContent = msg + "\n" + msgAr;
+        outputDiv.style.display = "block";
+
+        // Reset copy button state
+        const copyBtn = document.getElementById("copyBtn");
+        const copyText = document.getElementById("copyText");
+        const copyIcon = document.getElementById("copyIcon");
+        copyBtn.classList.remove("copied");
+        copyText.textContent = "Copy";
+        copyIcon.textContent = "📋";
+      }
+
+      function copyToClipboard() {
+        const outputContent = document.getElementById("outputContent");
+        const text = outputContent.textContent;
+
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            const copyBtn = document.getElementById("copyBtn");
+            const copyText = document.getElementById("copyText");
+            const copyIcon = document.getElementById("copyIcon");
+
+            copyBtn.classList.add("copied");
+            copyText.textContent = "Copied!";
+            copyIcon.textContent = "✓";
+
+            setTimeout(() => {
+              copyBtn.classList.remove("copied");
+              copyText.textContent = "Copy";
+              copyIcon.textContent = "📋";
+            }, 2000);
+          })
+          .catch((err) => {
+            // Fallback for older browsers
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+              document.execCommand("copy");
+              const copyBtn = document.getElementById("copyBtn");
+              const copyText = document.getElementById("copyText");
+              const copyIcon = document.getElementById("copyIcon");
+
+              copyBtn.classList.add("copied");
+              copyText.textContent = "Copied!";
+              copyIcon.textContent = "✓";
+
+              setTimeout(() => {
+                copyBtn.classList.remove("copied");
+                copyText.textContent = "Copy";
+                copyIcon.textContent = "📋";
+              }, 2000);
+            } catch (err) {
+              alert("Failed to copy text");
+            }
+            document.body.removeChild(textArea);
+          });
+      }
+
+      function shareOnWhatsApp() {
+        const outputContent = document.getElementById("outputContent");
+        const text = outputContent.textContent;
+        const encodedText = encodeURIComponent(text);
+        const url = `https://wa.me/?text=${encodedText}`;
+        window.open(url, "_blank");
+      }
+
+      renderStudents();
+    </script>
+  </body>
 </html>
-
-
-
-I would like to add share on whatsapp button
