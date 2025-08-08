@@ -195,6 +195,10 @@
           <span id="copyIcon">📋</span>
           <span id="copyText">Copy</span>
         </button>
+        <!-- <button class="share-btn" onclick="shareOnWhatsApp()">
+          <span id="shareIcon">📤</span>
+          <span id="shareText">WhatsApp</span>
+        </button> -->
       </div>
       <div id="outputContent"></div>
     </div>
@@ -517,8 +521,8 @@
 
       function generateMessage() {
         let msg =
-          "📚 Quran Homework Assignment\n Al Salam Alaykum Warahmatullahi Wabarakatuh\n";
-        let msgAr = "📚 واجب تحفيظ القرآن\n السلام عليكم ورحمة الله وبركاته\n";
+          "📚 Homework Assignment\n Al Salam Alaykum Warahmatullahi Wabarakatuh\n\n";
+        let msgAr = "📚 واجب المزلي\n السلام عليكم ورحمة الله وبركاته\n\n";
         students.forEach((student, index) => {
           if (index > 0) {
             msg += `\n${"-".repeat(30)}\n\n`;
@@ -594,7 +598,7 @@
 
         const outputDiv = document.getElementById("output");
         const outputContent = document.getElementById("outputContent");
-        outputContent.textContent = msgAr + "\n" + msg;
+        outputContent.textContent = msg + "\n" + msgAr;
         outputDiv.style.display = "block";
 
         // Reset copy button state
